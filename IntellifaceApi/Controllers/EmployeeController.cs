@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using Intelliface.BLL.DTOs;
 using Intelliface.BLL.Interfaces;
-using Intelliface.DTOs.Employee;
 using Intelliface.Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,8 +21,13 @@ public class EmployeeController : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         var employees = await _employeeService.GetAllEmployeesAsync();
-        var employeeDtos = _mapper.Map<List<EmployeeReadDto>>(employees);
-        return Ok(employeeDtos);
+        var result = employees.Select(a => new ReadDto<EmployeeDto>
+        {
+            Id = a.Id,
+            Data = _mapper.Map<EmployeeDto>(a)
+        }).ToList();
+
+        return Ok(result);
     }
 
     [HttpGet("{id}")]
@@ -30,38 +35,35 @@ public class EmployeeController : ControllerBase
     {
         var employee = await _employeeService.GetEmployeeByIdAsync(id);
         if (employee == null)
-            return NotFound("not found.");
+            return NotFound("Employee not found.");
 
-        var employeeDto = _mapper.Map<EmployeeReadDto>(employee);
+        var employeeDto = _mapper.Map<EmployeeDto>(employee);
         return Ok(employeeDto);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] EmployeeCreateDto employeeDto)
+    public async Task<IActionResult> Create([FromBody] EmployeeDto employeeDto)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
         var employee = _mapper.Map<Employee>(employeeDto);
-
         await _employeeService.AddEmployeeAsync(employee);
-        return Ok("succesfull.");
+
+        return Ok("Employee created successfully.");
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, [FromBody] EmployeeUpdateDto employeeDto)
+    public async Task<IActionResult> Update(int id, [FromBody] EmployeeDto employeeDto)
     {
-        if (id != employeeDto.Id)
-            return BadRequest("Id does not match.");
-
         var existing = await _employeeService.GetEmployeeByIdAsync(id);
         if (existing == null)
-            return NotFound("no record.");
+            return NotFound("Employee not found.");
 
         _mapper.Map(employeeDto, existing);
-
         await _employeeService.UpdateEmployeeAsync(existing);
-        return Ok("updated");
+
+        return Ok("Employee updated successfully.");
     }
 
     [HttpDelete("{id}")]
@@ -69,9 +71,9 @@ public class EmployeeController : ControllerBase
     {
         var existing = await _employeeService.GetEmployeeByIdAsync(id);
         if (existing == null)
-            return NotFound("not found.");
+            return NotFound("Employee not found.");
 
         await _employeeService.DeleteEmployeeAsync(id);
-        return Ok("deleted.");
+        return Ok("Employee deleted successfully.");
     }
 }

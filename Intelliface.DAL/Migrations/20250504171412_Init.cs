@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Intelliface.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -101,7 +101,8 @@ namespace Intelliface.DAL.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Departments_LocationId",
                 table: "Departments",
-                column: "LocationId");
+                column: "LocationId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_DepartmentId",

@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Intelliface.BLL\Intelliface.BLL.csproj" />
-    <ProjectReference Include="..\Intelliface.DTOs\Intelliface.DTOs.csproj" />
   </ItemGroup>
 
 </Project>

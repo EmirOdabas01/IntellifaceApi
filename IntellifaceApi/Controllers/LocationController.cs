@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using Intelliface.BLL.DTOs;
 using Intelliface.BLL.Interfaces;
-using Intelliface.DTOs.Location;
 using Intelliface.Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,8 +23,12 @@ namespace IntellifaceApi.Controllers
         public async Task<IActionResult> GetAll()
         {
             var locations = await _locationService.GetAllLocationsAsync();
-            var locationDtos = _mapper.Map<List<LocationReadDto>>(locations);
-            return Ok(locationDtos);
+            var result = locations.Select(a => new ReadDto<LocationDto>
+            {
+                Id = a.Id,
+                Data = _mapper.Map<LocationDto>(a)
+            }).ToList();
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -32,36 +36,33 @@ namespace IntellifaceApi.Controllers
         {
             var location = await _locationService.GetLocationByIdAsync(id);
             if (location == null)
-                return NotFound("not found");
+                return NotFound("Location not found.");
 
-            var locationDto = _mapper.Map<LocationReadDto>(location);
+            var locationDto = _mapper.Map<LocationDto>(location);
             return Ok(locationDto);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] LocationCreateDto dto)
+        public async Task<IActionResult> Create([FromBody] LocationDto dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var location = _mapper.Map<Location>(dto);
             await _locationService.AddLocationAsync(location);
-            return Ok("succesfull.");
+            return Ok("Location created successfully.");
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] LocationUpdateDto dto)
+        public async Task<IActionResult> Update(int id, [FromBody] LocationDto dto)
         {
-            if (id != dto.Id)
-                return BadRequest("Id does not match.");
-
             var existing = await _locationService.GetLocationByIdAsync(id);
             if (existing == null)
-                return NotFound("not found.");
+                return NotFound("Location not found.");
 
             _mapper.Map(dto, existing);
             await _locationService.UpdateLocationAsync(existing);
-            return Ok("updatedd");
+            return Ok("Location updated successfully.");
         }
 
         [HttpDelete("{id}")]
@@ -69,10 +70,10 @@ namespace IntellifaceApi.Controllers
         {
             var existing = await _locationService.GetLocationByIdAsync(id);
             if (existing == null)
-                return NotFound("not foundd.");
+                return NotFound("Location not found.");
 
             await _locationService.DeleteLocationAsync(id);
-            return Ok("deleted.");
+            return Ok("Location deleted successfully.");
         }
     }
 }

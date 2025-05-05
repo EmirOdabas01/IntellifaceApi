@@ -66,7 +66,8 @@ namespace Intelliface.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LocationId");
+                    b.HasIndex("LocationId")
+                        .IsUnique();
 
                     b.ToTable("Departments");
                 });
@@ -149,8 +150,8 @@ namespace Intelliface.DAL.Migrations
             modelBuilder.Entity("Intelliface.Entities.Models.Department", b =>
                 {
                     b.HasOne("Intelliface.Entities.Models.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId")
+                        .WithOne("Department")
+                        .HasForeignKey("Intelliface.Entities.Models.Department", "LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -176,6 +177,11 @@ namespace Intelliface.DAL.Migrations
             modelBuilder.Entity("Intelliface.Entities.Models.Employee", b =>
                 {
                     b.Navigation("Attendances");
+                });
+
+            modelBuilder.Entity("Intelliface.Entities.Models.Location", b =>
+                {
+                    b.Navigation("Department");
                 });
 #pragma warning restore 612, 618
         }

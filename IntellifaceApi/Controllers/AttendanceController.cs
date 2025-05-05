@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using Intelliface.BLL.DTOs;
 using Intelliface.BLL.Interfaces;
-using Intelliface.DTOs.Attendance;
 using Intelliface.Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,8 +23,17 @@ namespace IntellifaceApi.Controllers
         public async Task<IActionResult> GetAll()
         {
             var attendances = await _attendanceService.GetAllAttendancesAsync();
-            var dtoList = _mapper.Map<List<AttendanceReadDto>>(attendances);
-            return Ok(dtoList);
+
+            var result = attendances.Select(a => new ReadDto<AttendanceDto>
+            {
+                Id = a.Id,
+                Data = _mapper.Map<AttendanceDto>(a)
+            }).ToList();
+
+
+
+           
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -32,36 +41,33 @@ namespace IntellifaceApi.Controllers
         {
             var attendance = await _attendanceService.GetAttendanceByIdAsync(id);
             if (attendance == null)
-                return NotFound("No record");
+                return NotFound("Attendance record not found.");
 
-            var dto = _mapper.Map<AttendanceReadDto>(attendance);
+            var dto = _mapper.Map<AttendanceDto>(attendance);
             return Ok(dto);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] AttendanceCreateDto dto)
+        public async Task<IActionResult> Create([FromBody] AttendanceDto dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var attendance = _mapper.Map<Attendance>(dto);
             await _attendanceService.AddAttendanceAsync(attendance);
-            return Ok("Succesful.");
+            return Ok("Attendance created successfully.");
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] AttendanceUpdateDto dto)
+        public async Task<IActionResult> Update(int id, [FromBody] AttendanceDto dto)
         {
-            if (id != dto.Id)
-                return BadRequest("Id does not match");
-
             var existing = await _attendanceService.GetAttendanceByIdAsync(id);
             if (existing == null)
-                return NotFound("no record");
+                return NotFound("Attendance record not found.");
 
             _mapper.Map(dto, existing);
             await _attendanceService.UpdateAttendanceAsync(existing);
-            return Ok("Succesfull.");
+            return Ok("Attendance updated successfully.");
         }
 
         [HttpDelete("{id}")]
@@ -69,10 +75,10 @@ namespace IntellifaceApi.Controllers
         {
             var existing = await _attendanceService.GetAttendanceByIdAsync(id);
             if (existing == null)
-                return NotFound("no record");
+                return NotFound("Attendance record not found.");
 
             await _attendanceService.DeleteAttendanceAsync(id);
-            return Ok("deleted");
+            return Ok("Attendance deleted successfully.");
         }
     }
 }

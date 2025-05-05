@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intelliface.DAL", "Intellif
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intelliface.Entities", "Intelliface.Entities\Intelliface.Entities.csproj", "{6A2BDCCF-9479-46C6-A8BA-E326418D29E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intelliface.DTOs", "Intelliface.DTOs\Intelliface.DTOs.csproj", "{C7998489-185F-4AAD-B2B0-B9CFCDB2F9BC}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,10 +33,6 @@ Global
 		{6A2BDCCF-9479-46C6-A8BA-E326418D29E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A2BDCCF-9479-46C6-A8BA-E326418D29E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A2BDCCF-9479-46C6-A8BA-E326418D29E4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C7998489-185F-4AAD-B2B0-B9CFCDB2F9BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C7998489-185F-4AAD-B2B0-B9CFCDB2F9BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C7998489-185F-4AAD-B2B0-B9CFCDB2F9BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C7998489-185F-4AAD-B2B0-B9CFCDB2F9BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

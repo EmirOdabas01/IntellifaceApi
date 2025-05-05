@@ -4,15 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Intelliface.Entities.Models
+namespace Intelliface.BLL.DTOs
 {
-    public class Location
+    public class LocationDto
     {
-        public int Id { get; set; }
-        required public string Address { get; set; }
+        public string Address { get; set; } = String.Empty;
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-
-        public Department? Department { get; set; }
     }
 }
