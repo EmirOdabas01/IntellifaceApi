@@ -46,24 +46,41 @@ namespace IntellifaceApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] DepartmentDto dto)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
 
-            var department = _mapper.Map<Department>(dto);
-            await _departmentService.AddDepartmentAsync(department);
-            return Ok("Department created successfully.");
+           
+            try
+            {
+                var department = _mapper.Map<Department>(dto);
+                await _departmentService.AddDepartmentAsync(department);
+                return Ok("Department created successfully.");
+            }
+            catch(InvalidOperationException ex)
+            {
+                return BadRequest(new {message = ex.Message});
+            }
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] DepartmentDto dto)
         {
             var existing = await _departmentService.GetDepartmentByIdAsync(id);
-            if (existing == null)
-                return NotFound("Department not found.");
+            if (existing == null) return NotFound("department not found");
 
-            _mapper.Map(dto, existing);
-            await _departmentService.UpdateDepartmentAsync(existing);
-            return Ok("Department updated successfully.");
+            try
+            {
+
+                _mapper.Map(dto, existing);
+
+                await _departmentService.UpdateDepartmentAsync(existing);
+                return Ok("Department updated successfully.");
+
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpDelete("{id}")]

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Intelliface.Entities.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,8 @@ namespace Intelliface.DAL.Interfaces
         Task AddAsync(T entity);
         void Update(T entity);
         void Delete(T entity);
+
+        bool isLocationSelected(int locationId);
         Task SaveAsync();
     }
 }

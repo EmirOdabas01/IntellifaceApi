@@ -11,11 +11,13 @@ namespace IntellifaceApi.Controllers
     public class AttendanceController : ControllerBase
     {
         private readonly IAttendanceService _attendanceService;
+        private readonly IEmployeeService _employeeService;
         private readonly IMapper _mapper;
 
-        public AttendanceController(IAttendanceService attendanceService, IMapper mapper)
+        public AttendanceController(IAttendanceService attendanceService, IEmployeeService employee, IMapper mapper)
         {
             _attendanceService = attendanceService;
+            _employeeService = employee;
             _mapper = mapper;
         }
 
@@ -47,23 +49,11 @@ namespace IntellifaceApi.Controllers
             return Ok(dto);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] AttendanceDto dto)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var attendance = _mapper.Map<Attendance>(dto);
-            await _attendanceService.AddAttendanceAsync(attendance);
-            return Ok("Attendance created successfully.");
-        }
-
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] AttendanceDto dto)
         {
             var existing = await _attendanceService.GetAttendanceByIdAsync(id);
-            if (existing == null)
-                return NotFound("Attendance record not found.");
+            if (existing == null) return NotFound("Attendance record not found.");
 
             _mapper.Map(dto, existing);
             await _attendanceService.UpdateAttendanceAsync(existing);
@@ -80,5 +70,27 @@ namespace IntellifaceApi.Controllers
             await _attendanceService.DeleteAttendanceAsync(id);
             return Ok("Attendance deleted successfully.");
         }
+        [HttpPost("{employeeId}")]
+        public async Task<IActionResult> CheckIn(int employeeId)
+        {
+            var emp = await _employeeService.GetEmployeeByIdAsync(employeeId);
+            if (emp == null)
+                return NotFound("Employee not found");
+
+            var result = await _attendanceService.CheckInAsync(employeeId);
+            return Ok(result);
+        }
+
+        [HttpPost("{employeeId}")]
+        public async Task<IActionResult> CheckOut(int employeeId)
+        {
+            var emp = await _employeeService.GetEmployeeByIdAsync(employeeId);
+            if (emp == null)
+                return NotFound("Employee not found");
+
+            var result = await _attendanceService.CheckOutAsync(employeeId);
+            return Ok(result);
+        }
+
     }
 }

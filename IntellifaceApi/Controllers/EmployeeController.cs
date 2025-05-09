@@ -47,23 +47,40 @@ public class EmployeeController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var employee = _mapper.Map<Employee>(employeeDto);
-        await _employeeService.AddEmployeeAsync(employee);
+        try
+        {
+            var employee = _mapper.Map<Employee>(employeeDto);
+            await _employeeService.AddEmployeeAsync(employee);
 
-        return Ok("Employee created successfully.");
+            return Ok("Employee created successfully.");
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+      
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody] EmployeeDto employeeDto)
     {
         var existing = await _employeeService.GetEmployeeByIdAsync(id);
-        if (existing == null)
-            return NotFound("Employee not found.");
+        if (existing == null) return NotFound("employee not found");
 
-        _mapper.Map(employeeDto, existing);
-        await _employeeService.UpdateEmployeeAsync(existing);
+        try
+        {
+            _mapper.Map(employeeDto, existing);
+            await _employeeService.UpdateEmployeeAsync(existing);
 
-        return Ok("Employee updated successfully.");
+            return Ok("Employee updated successfully.");
+        }
+        catch (Exception ex)
+        {
+
+            return BadRequest(new { message = ex.Message });
+        }
+
+       
     }
 
     [HttpDelete("{id}")]

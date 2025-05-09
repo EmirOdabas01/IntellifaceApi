@@ -57,8 +57,7 @@ namespace IntellifaceApi.Controllers
         public async Task<IActionResult> Update(int id, [FromBody] LocationDto dto)
         {
             var existing = await _locationService.GetLocationByIdAsync(id);
-            if (existing == null)
-                return NotFound("Location not found.");
+            if (existing == null) return NotFound("Location not found.");
 
             _mapper.Map(dto, existing);
             await _locationService.UpdateLocationAsync(existing);

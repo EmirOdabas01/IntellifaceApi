@@ -12,10 +12,12 @@ namespace Intelliface.BLL.Services
     public class EmployeeService : IEmployeeService
     {
         private readonly IRepository<Employee> _employeeRepository;
+        private readonly IRepository<Department> _departmentRepository;
 
-        public EmployeeService(IRepository<Employee> employeeRepository)
+        public EmployeeService(IRepository<Employee> employeeRepository, IRepository<Department> departmentRepository)
         {
             _employeeRepository = employeeRepository;
+            _departmentRepository = departmentRepository;
         }
 
         public async Task<List<Employee>> GetAllEmployeesAsync()
@@ -30,18 +32,24 @@ namespace Intelliface.BLL.Services
 
         public async Task AddEmployeeAsync(Employee employee)
         {
-            await _employeeRepository.AddAsync(employee);
-            await _employeeRepository.SaveAsync();
+            if (await _departmentRepository.GetByIdAsync(employee.DepartmentId) != null)
+            {
+                await _employeeRepository.AddAsync(employee);
+                await _employeeRepository.SaveAsync();
+            }
+            else
+                throw new InvalidOperationException("There is no existing department");
+
         }
 
         public async Task UpdateEmployeeAsync(Employee employee)
         {
-            var existingEmployee = await _employeeRepository.GetByIdAsync(employee.Id);
-            if (existingEmployee != null)
-            {
-                _employeeRepository.Update(employee);
-                await _employeeRepository.SaveAsync();
-            }
+            if (await _departmentRepository.GetByIdAsync(employee.DepartmentId) == null)
+                throw new Exception("there is no existing department");
+
+
+            _employeeRepository.Update(employee);
+            await _employeeRepository.SaveAsync();
         }
 
         public async Task DeleteEmployeeAsync(int id)
@@ -53,5 +61,6 @@ namespace Intelliface.BLL.Services
                 await _employeeRepository.SaveAsync();
             }
         }
+
     }
 }

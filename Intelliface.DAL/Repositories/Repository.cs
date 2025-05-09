@@ -1,4 +1,5 @@
 ﻿using Intelliface.DAL.Interfaces;
+using Intelliface.Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -37,6 +38,11 @@ namespace Intelliface.DAL.Repositories
         public async Task<T?> GetByIdAsync(int id)
         {
             return await _dbSet.FindAsync(id);
+        }
+
+        public bool isLocationSelected(int locationId)
+        {
+            return _context.Departments.Any(d => d.LocationId == locationId);
         }
 
         public async Task SaveAsync()

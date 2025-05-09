@@ -11,8 +11,9 @@ namespace Intelliface.BLL.Interfaces
     {
         Task<List<Attendance>> GetAllAttendancesAsync();
         Task<Attendance?> GetAttendanceByIdAsync(int Id);
-        Task AddAttendanceAsync(Attendance attendance);
         Task UpdateAttendanceAsync(Attendance attendance);
         Task DeleteAttendanceAsync(int Id);
+        Task<string> CheckOutAsync(int employeeId);
+        Task<string> CheckInAsync(int employeeId);
     }
 }
