@@ -36,12 +36,9 @@ namespace Intelliface.BLL.Services
 
         public async Task UpdateLocationAsync(Location location)
         {
-            var existing = await _locationRepository.GetByIdAsync(location.Id);
-            if (existing != null)
-            {
+            
                 _locationRepository.Update(location);
                 await _locationRepository.SaveAsync();
-            }
         }
 
         public async Task DeleteLocationAsync(int id)

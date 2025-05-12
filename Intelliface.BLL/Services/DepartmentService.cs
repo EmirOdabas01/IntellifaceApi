@@ -35,14 +35,14 @@ namespace Intelliface.BLL.Services
             if (await _locationRepository.GetByIdAsync(department.LocationId) != null)
             {
                 if(_departmentRepository.isLocationSelected(department.LocationId))
-                    throw new InvalidOperationException("This location is already selected");
+                    throw new Exception("This location is already selected");
                 
 
                 await _departmentRepository.AddAsync(department);
                 await _departmentRepository.SaveAsync();
             }
             else
-                throw new InvalidOperationException("There is no existing location");
+                throw new Exception("There is no existing location");
         }
 
         public async Task UpdateDepartmentAsync(Department department)

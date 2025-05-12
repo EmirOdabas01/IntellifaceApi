@@ -1,6 +1,7 @@
 ﻿using Intelliface.BLL.Interfaces;
 using Intelliface.DAL.Interfaces;
 using Intelliface.Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,8 @@ namespace Intelliface.BLL.Services
     {
         private readonly IRepository<Employee> _employeeRepository;
         private readonly IRepository<Department> _departmentRepository;
+
+   
 
         public EmployeeService(IRepository<Employee> employeeRepository, IRepository<Department> departmentRepository)
         {
@@ -38,7 +41,7 @@ namespace Intelliface.BLL.Services
                 await _employeeRepository.SaveAsync();
             }
             else
-                throw new InvalidOperationException("There is no existing department");
+                throw new Exception("There is no existing department");
 
         }
 

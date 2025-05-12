@@ -1,4 +1,5 @@
-﻿using Intelliface.Entities.Models;
+﻿using Intelliface.BLL.DTOs;
+using Intelliface.Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Intelliface.BLL.Interfaces
         Task<Attendance?> GetAttendanceByIdAsync(int Id);
         Task UpdateAttendanceAsync(Attendance attendance);
         Task DeleteAttendanceAsync(int Id);
-        Task<string> CheckOutAsync(int employeeId);
-        Task<string> CheckInAsync(int employeeId);
+        Task<AttendanceResultDto> CheckInAsync(int employeeId, double Latitude, double Longitude);
+        Task<AttendanceResultDto> CheckOutAsync(int employeeId, double Latitude, double Longitude);
     }
 }

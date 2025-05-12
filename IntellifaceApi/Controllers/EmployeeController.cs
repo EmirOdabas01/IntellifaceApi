@@ -34,8 +34,7 @@ public class EmployeeController : ControllerBase
     public async Task<IActionResult> GetById(int id)
     {
         var employee = await _employeeService.GetEmployeeByIdAsync(id);
-        if (employee == null)
-            return NotFound("Employee not found.");
+        if (employee == null) return NotFound("Employee not found.");
 
         var employeeDto = _mapper.Map<EmployeeDto>(employee);
         return Ok(employeeDto);
@@ -54,7 +53,7 @@ public class EmployeeController : ControllerBase
 
             return Ok("Employee created successfully.");
         }
-        catch (InvalidOperationException ex)
+        catch (Exception ex)
         {
             return BadRequest(new { message = ex.Message });
         }
@@ -87,8 +86,7 @@ public class EmployeeController : ControllerBase
     public async Task<IActionResult> Delete(int id)
     {
         var existing = await _employeeService.GetEmployeeByIdAsync(id);
-        if (existing == null)
-            return NotFound("Employee not found.");
+        if (existing == null) return NotFound("Employee not found.");
 
         await _employeeService.DeleteEmployeeAsync(id);
         return Ok("Employee deleted successfully.");

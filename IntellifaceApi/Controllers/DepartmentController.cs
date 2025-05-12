@@ -36,8 +36,7 @@ namespace IntellifaceApi.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var department = await _departmentService.GetDepartmentByIdAsync(id);
-            if (department == null)
-                return NotFound("Department not found.");
+            if (department == null) return NotFound("Department not found.");
 
             var departmentDto = _mapper.Map<DepartmentDto>(department);
             return Ok(departmentDto);
@@ -49,14 +48,13 @@ namespace IntellifaceApi.Controllers
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
-           
             try
             {
                 var department = _mapper.Map<Department>(dto);
                 await _departmentService.AddDepartmentAsync(department);
                 return Ok("Department created successfully.");
             }
-            catch(InvalidOperationException ex)
+            catch(Exception ex)
             {
                 return BadRequest(new {message = ex.Message});
             }
@@ -70,7 +68,6 @@ namespace IntellifaceApi.Controllers
 
             try
             {
-
                 _mapper.Map(dto, existing);
 
                 await _departmentService.UpdateDepartmentAsync(existing);
@@ -87,8 +84,7 @@ namespace IntellifaceApi.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var existing = await _departmentService.GetDepartmentByIdAsync(id);
-            if (existing == null)
-                return NotFound("Department not found.");
+            if (existing == null) return NotFound("Department not found.");
 
             await _departmentService.DeleteDepartmentAsync(id);
             return Ok("Department deleted successfully.");

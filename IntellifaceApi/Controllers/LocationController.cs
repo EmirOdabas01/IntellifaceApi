@@ -35,8 +35,7 @@ namespace IntellifaceApi.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var location = await _locationService.GetLocationByIdAsync(id);
-            if (location == null)
-                return NotFound("Location not found.");
+            if (location == null) return NotFound("Location not found.");
 
             var locationDto = _mapper.Map<LocationDto>(location);
             return Ok(locationDto);

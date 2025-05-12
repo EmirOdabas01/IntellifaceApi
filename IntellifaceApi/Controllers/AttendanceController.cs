@@ -33,8 +33,6 @@ namespace IntellifaceApi.Controllers
             }).ToList();
 
 
-
-           
             return Ok(result);
         }
 
@@ -42,8 +40,7 @@ namespace IntellifaceApi.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var attendance = await _attendanceService.GetAttendanceByIdAsync(id);
-            if (attendance == null)
-                return NotFound("Attendance record not found.");
+            if (attendance == null) return NotFound("Attendance record not found.");
 
             var dto = _mapper.Map<AttendanceDto>(attendance);
             return Ok(dto);
@@ -64,32 +61,40 @@ namespace IntellifaceApi.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var existing = await _attendanceService.GetAttendanceByIdAsync(id);
-            if (existing == null)
-                return NotFound("Attendance record not found.");
+            if (existing == null) return NotFound("Attendance record not found.");
 
             await _attendanceService.DeleteAttendanceAsync(id);
             return Ok("Attendance deleted successfully.");
         }
         [HttpPost("{employeeId}")]
-        public async Task<IActionResult> CheckIn(int employeeId)
+        public async Task<IActionResult> CheckIn(int employeeId, double langitute, double longitute)
         {
-            var emp = await _employeeService.GetEmployeeByIdAsync(employeeId);
-            if (emp == null)
-                return NotFound("Employee not found");
+            var existing = await _employeeService.GetEmployeeByIdAsync(employeeId);
+            if (existing == null) return NotFound("employee not found");
 
-            var result = await _attendanceService.CheckInAsync(employeeId);
-            return Ok(result);
+            var result = await _attendanceService.CheckInAsync(employeeId, langitute, longitute);
+
+            if (result.Success)
+                return Ok(result.Message);
+            else if (result.Message.Contains("not found"))
+                return NotFound(result.Message);
+            else
+                return BadRequest(result.Message);
         }
-
         [HttpPost("{employeeId}")]
-        public async Task<IActionResult> CheckOut(int employeeId)
+        public async Task<IActionResult> CheckOut(int employeeId, double langitute, double longitute)
         {
-            var emp = await _employeeService.GetEmployeeByIdAsync(employeeId);
-            if (emp == null)
-                return NotFound("Employee not found");
+            var existing = await _employeeService.GetEmployeeByIdAsync(employeeId);
+            if (existing == null) return NotFound("employee not found");
 
-            var result = await _attendanceService.CheckOutAsync(employeeId);
-            return Ok(result);
+            var result = await _attendanceService.CheckOutAsync(employeeId, langitute, longitute);
+
+            if (result.Success)
+                return Ok(result.Message);
+            else if (result.Message.Contains("not found"))
+                return NotFound(result.Message);
+            else
+                return BadRequest(result.Message);
         }
 
     }
