@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,5 +18,7 @@ namespace Intelliface.DAL.Interfaces
 
         bool isLocationSelected(int locationId);
         Task SaveAsync();
+
+        Task<T?> GetAsync(Expression<Func<T, bool>> filter);
     }
 }

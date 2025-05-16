@@ -91,4 +91,17 @@ public class EmployeeController : ControllerBase
         await _employeeService.DeleteEmployeeAsync(id);
         return Ok("Employee deleted successfully.");
     }
+    [HttpPost]
+    public async Task<IActionResult> IsAdmin([FromBody] LoginDto admin)
+    {
+        if (admin == null)
+            return BadRequest("admin can not be null");
+
+        var isAdmin = await _employeeService.AdminAuthentication(admin);
+
+        if (!isAdmin) return NotFound("Admin not found");
+
+        return Ok("It's an admin");
+    }
+
 }

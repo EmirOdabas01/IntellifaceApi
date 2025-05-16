@@ -1,4 +1,5 @@
-﻿using Intelliface.Entities.Models;
+﻿using Intelliface.BLL.DTOs;
+using Intelliface.Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace Intelliface.BLL.Interfaces
         Task AddEmployeeAsync(Employee employee);
         Task UpdateEmployeeAsync(Employee employee);
         Task DeleteEmployeeAsync(int id);
+        Task<bool> AdminAuthentication(LoginDto admin);
     }
 }

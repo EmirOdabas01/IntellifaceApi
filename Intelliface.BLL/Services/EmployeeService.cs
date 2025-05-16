@@ -1,4 +1,5 @@
-﻿using Intelliface.BLL.Interfaces;
+﻿using Intelliface.BLL.DTOs;
+using Intelliface.BLL.Interfaces;
 using Intelliface.DAL.Interfaces;
 using Intelliface.Entities.Models;
 using Microsoft.EntityFrameworkCore;
@@ -65,5 +66,16 @@ namespace Intelliface.BLL.Services
             }
         }
 
+        public async Task<bool> AdminAuthentication(LoginDto loginDto)
+        {
+            var adminUser = await _employeeRepository.GetAsync(emp =>
+                emp.IsAdmin &&
+                emp.Email == loginDto.EMail &&
+                emp.Password == loginDto.Password);
+
+            if (adminUser == null) return false;
+
+            return true;
+        }
     }
 }
