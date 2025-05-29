@@ -29,7 +29,7 @@ builder.Services.AddDbContext<IntellifaceDbContext>(options =>
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-
+builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IAttendanceService, AttendanceService>();
 builder.Services.AddScoped<ILocationService, LocationService>();

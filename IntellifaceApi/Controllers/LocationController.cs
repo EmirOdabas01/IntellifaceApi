@@ -30,6 +30,19 @@ namespace IntellifaceApi.Controllers
             }).ToList();
             return Ok(result);
         }
+        [HttpGet]
+        public async Task<IActionResult> GetAllNotSelected()
+        {
+            var locations = await _locationService.GetAllLocationsNotSelectedAsync();
+            var result = locations.Select(a => new ReadDto<LocationDto>
+            {
+                Id = a.Id,
+                Data = _mapper.Map<LocationDto>(a)
+            }).ToList();
+
+            return Ok(result);
+        }
+
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
@@ -37,8 +50,12 @@ namespace IntellifaceApi.Controllers
             var location = await _locationService.GetLocationByIdAsync(id);
             if (location == null) return NotFound("Location not found.");
 
-            var locationDto = _mapper.Map<LocationDto>(location);
-            return Ok(locationDto);
+            var model = new ReadDto<LocationDto>
+            {
+                Id = location.Id,
+                Data = _mapper.Map<LocationDto>(location)
+            };
+            return Ok(model);
         }
 
         [HttpPost]

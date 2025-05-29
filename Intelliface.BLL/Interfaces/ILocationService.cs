@@ -10,6 +10,7 @@ namespace Intelliface.BLL.Interfaces
     public interface ILocationService
     {
         Task<List<Location>> GetAllLocationsAsync();
+        Task<List<Location>> GetAllLocationsNotSelectedAsync();
         Task<Location?> GetLocationByIdAsync(int id);
         Task AddLocationAsync(Location location);
         Task UpdateLocationAsync(Location location);

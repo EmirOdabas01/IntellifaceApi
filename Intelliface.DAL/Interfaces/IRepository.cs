@@ -18,7 +18,7 @@ namespace Intelliface.DAL.Interfaces
 
         bool isLocationSelected(int locationId);
         Task SaveAsync();
-
+        Task<Department?> GetByLocationIdAsync(int locationId);
         Task<T?> GetAsync(Expression<Func<T, bool>> filter);
     }
 }

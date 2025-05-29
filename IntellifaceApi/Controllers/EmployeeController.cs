@@ -36,8 +36,13 @@ public class EmployeeController : ControllerBase
         var employee = await _employeeService.GetEmployeeByIdAsync(id);
         if (employee == null) return NotFound("Employee not found.");
 
-        var employeeDto = _mapper.Map<EmployeeDto>(employee);
-        return Ok(employeeDto);
+
+        var dto = new ReadDto<EmployeeDto>
+        {
+            Id = employee.Id,
+            Data = _mapper.Map<EmployeeDto>(employee)
+        };
+        return Ok(dto);
     }
 
     [HttpPost]

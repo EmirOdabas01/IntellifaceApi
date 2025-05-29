@@ -60,5 +60,12 @@ namespace Intelliface.DAL.Repositories
         {
             return await _dbSet.FirstOrDefaultAsync(filter);
         }
+
+        public async Task<Department?> GetByLocationIdAsync(int locationId)
+        {
+            return await _context.Departments
+                .FirstOrDefaultAsync(d => d.LocationId == locationId);
+        }
+
     }
 }

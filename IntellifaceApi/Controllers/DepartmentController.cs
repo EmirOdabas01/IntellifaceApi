@@ -38,8 +38,13 @@ namespace IntellifaceApi.Controllers
             var department = await _departmentService.GetDepartmentByIdAsync(id);
             if (department == null) return NotFound("Department not found.");
 
-            var departmentDto = _mapper.Map<DepartmentDto>(department);
-            return Ok(departmentDto);
+            var  dto = new ReadDto<DepartmentDto>
+            {
+                Id = department.Id,
+                Data = _mapper.Map<DepartmentDto>(department)
+            };
+
+            return Ok(dto);
         }
 
         [HttpPost]

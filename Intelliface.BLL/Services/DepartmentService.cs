@@ -48,21 +48,23 @@ namespace Intelliface.BLL.Services
         public async Task UpdateDepartmentAsync(Department department)
         {
             var existingDepartment = await _departmentRepository.GetByIdAsync(department.Id);
-
+            if (existingDepartment == null)
+                throw new Exception("Department not found.");
 
             var location = await _locationRepository.GetByIdAsync(department.LocationId);
             if (location == null)
                 throw new Exception("Location does not exist.");
 
-            if (_departmentRepository.isLocationSelected(department.LocationId))
+            var assignedDepartment = await _departmentRepository.GetByLocationIdAsync(department.LocationId);
+            if (assignedDepartment != null && assignedDepartment.Id != department.Id)
                 throw new Exception("Location is already assigned to another department.");
 
-           
+            existingDepartment.Name = department.Name;
+            existingDepartment.LocationId = department.LocationId;
 
             _departmentRepository.Update(existingDepartment);
             await _departmentRepository.SaveAsync();
         }
-
 
         public async Task DeleteDepartmentAsync(int id)
         {

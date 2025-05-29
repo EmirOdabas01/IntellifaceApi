@@ -12,10 +12,11 @@ namespace Intelliface.BLL.Services
     public class LocationService : ILocationService
     {
         private readonly IRepository<Location> _locationRepository;
-
-        public LocationService(IRepository<Location> locationRepository)
+        private readonly ILocationRepository _locationRepositorySpecific;
+        public LocationService(IRepository<Location> locationRepository, ILocationRepository locationRepositorySpecific)
         {
             _locationRepository = locationRepository;
+            _locationRepositorySpecific = locationRepositorySpecific;
         }
 
         public async Task<List<Location>> GetAllLocationsAsync()
@@ -49,6 +50,11 @@ namespace Intelliface.BLL.Services
                 _locationRepository.Delete(location);
                 await _locationRepository.SaveAsync();
             }
+        }
+
+        public async Task<List<Location>> GetAllLocationsNotSelectedAsync()
+        {
+            return await _locationRepositorySpecific.GetAllNotSelected();
         }
     }
 }
