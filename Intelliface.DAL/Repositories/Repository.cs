@@ -67,5 +67,11 @@ namespace Intelliface.DAL.Repositories
                 .FirstOrDefaultAsync(d => d.LocationId == locationId);
         }
 
+        public async Task<List<Attendance>> GetAttendancesByEmployeeIdAsync(int employeeId)
+        {
+            return await _context.Attendances
+                          .Where(a => a.EmployeeId == employeeId)
+                          .ToListAsync();
+        }
     }
 }

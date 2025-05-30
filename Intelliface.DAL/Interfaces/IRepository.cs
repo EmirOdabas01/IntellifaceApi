@@ -20,5 +20,7 @@ namespace Intelliface.DAL.Interfaces
         Task SaveAsync();
         Task<Department?> GetByLocationIdAsync(int locationId);
         Task<T?> GetAsync(Expression<Func<T, bool>> filter);
+
+        Task<List<Attendance>> GetAttendancesByEmployeeIdAsync(int employeeId);
     }
 }

@@ -96,6 +96,20 @@ namespace IntellifaceApi.Controllers
             else
                 return BadRequest(result.Message);
         }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetAttendancesByEmployeeId(int id)
+        {
+            var attendances = await _attendanceService.GetAttendancesByEmployeeIdAsync(id);
 
+            if (attendances == null || !attendances.Any())
+                return NotFound("No attendance records found for this employee.");
+            var result = attendances.Select(a => new ReadDto<AttendanceDto>
+            {
+                Id = a.Id,
+                Data = _mapper.Map<AttendanceDto>(a)
+            }).ToList();
+            return Ok(result);
+
+        }
     }
 }

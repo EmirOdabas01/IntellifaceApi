@@ -52,7 +52,7 @@ namespace Intelliface.BLL.Services
         public async Task<AttendanceResultDto> CheckInAsync(int employeeId, double latitude, double longitude)
         {
             TimeSpan checkInStart = new TimeSpan(8, 0, 0);  
-            TimeSpan checkInEnd = new TimeSpan(17, 0, 0);   
+            TimeSpan checkInEnd = new TimeSpan(24, 0, 0);   
 
             TimeSpan currentTime = DateTime.UtcNow.TimeOfDay;
 
@@ -127,7 +127,7 @@ namespace Intelliface.BLL.Services
         public async Task<AttendanceResultDto> CheckOutAsync(int employeeId, double latitude, double longitude)
         {
             TimeSpan checkInStart = new TimeSpan(8, 0, 0);
-            TimeSpan checkInEnd = new TimeSpan(17, 0, 0);
+            TimeSpan checkInEnd = new TimeSpan(24, 0, 0);
 
             TimeSpan currentTime = DateTime.UtcNow.TimeOfDay;
 
@@ -205,6 +205,14 @@ namespace Intelliface.BLL.Services
 
             var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
             return R * c;
+        }
+
+        public async Task<List<Attendance>> GetAttendancesByEmployeeIdAsync(int employeeId)
+        {
+            if (employeeId >= 0)
+                return await _attendanceRepository.GetAttendancesByEmployeeIdAsync(employeeId);
+
+            return await Task.FromResult(new List<Attendance>());
         }
     }
 }

@@ -16,5 +16,6 @@ namespace Intelliface.BLL.Interfaces
         Task DeleteAttendanceAsync(int Id);
         Task<AttendanceResultDto> CheckInAsync(int employeeId, double Latitude, double Longitude);
         Task<AttendanceResultDto> CheckOutAsync(int employeeId, double Latitude, double Longitude);
+        Task<List<Attendance>> GetAttendancesByEmployeeIdAsync(int employeeId);
     }
 }
