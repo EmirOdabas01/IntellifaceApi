@@ -10,15 +10,29 @@ namespace IntellifaceApi.Controllers
     [Route("api/[controller]/[action]")]
     public class TrainImageController : ControllerBase
     {
+        private readonly ITrainService _trainService;
         private readonly ITrainImageService _trainImageService;
         private readonly IMapper _mapper;
 
-        public TrainImageController(ITrainImageService trainImageService, IMapper mapper)
+        public TrainImageController(ITrainImageService trainImageService, IMapper mapper, ITrainService trainService)
         {
             _trainImageService = trainImageService;
             _mapper = mapper;
+            _trainService = trainService;
         }
-
+        [HttpPost("{employeeId}")]
+        public async Task<IActionResult> TrainModel(int employeeId)
+        {
+            try
+            {
+                await _trainService.TrainModelAsync(employeeId);
+                return Ok($"Model trained successfully for employeeId: {employeeId}");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
         [HttpPost]
         public async Task<IActionResult> CreateMultiple([FromBody] TrainImageCreateDto dto)
         {

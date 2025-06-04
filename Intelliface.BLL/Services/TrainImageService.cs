@@ -22,7 +22,6 @@ namespace Intelliface.BLL.Services
 
         public async Task AddAsync(EmployeeTrainImage trainingData)
         {
-            // Check if the related employee exists
             var employee = await _employeeRepository.GetByIdAsync(trainingData.EmployeeId);
             if (employee == null)
                 throw new Exception("The employee does not exist.");

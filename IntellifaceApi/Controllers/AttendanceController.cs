@@ -67,12 +67,12 @@ namespace IntellifaceApi.Controllers
             return Ok("Attendance deleted successfully.");
         }
         [HttpPost("{employeeId}")]
-        public async Task<IActionResult> CheckIn(int employeeId, double langitute, double longitute)
+        public async Task<IActionResult> CheckIn(int employeeId, double langitute, double longitute, byte[] Image)
         {
             var existing = await _employeeService.GetEmployeeByIdAsync(employeeId);
             if (existing == null) return NotFound("employee not found");
 
-            var result = await _attendanceService.CheckInAsync(employeeId, langitute, longitute);
+            var result = await _attendanceService.CheckInAsync(employeeId, langitute, longitute, Image);
 
             if (result.Success)
                 return Ok(result.Message);
@@ -82,12 +82,12 @@ namespace IntellifaceApi.Controllers
                 return BadRequest(result.Message);
         }
         [HttpPost("{employeeId}")]
-        public async Task<IActionResult> CheckOut(int employeeId, double langitute, double longitute)
+        public async Task<IActionResult> CheckOut(int employeeId, double langitute, double longitute, byte[] Image)
         {
             var existing = await _employeeService.GetEmployeeByIdAsync(employeeId);
             if (existing == null) return NotFound("employee not found");
 
-            var result = await _attendanceService.CheckOutAsync(employeeId, langitute, longitute);
+            var result = await _attendanceService.CheckOutAsync(employeeId, langitute, longitute, Image);
 
             if (result.Success)
                 return Ok(result.Message);

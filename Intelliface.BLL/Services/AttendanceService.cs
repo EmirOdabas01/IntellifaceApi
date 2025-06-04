@@ -14,13 +14,14 @@ namespace Intelliface.BLL.Services
     {
         private readonly IRepository<Attendance> _attendanceRepository;
         private readonly IEmployeeRepository _employeeRepository;
-
+        private readonly IRecognitionService _recognitionService;
         private const double MaxDistance = 400;
 
-        public AttendanceService(IRepository<Attendance> attendanceRepository, IEmployeeRepository employeeRepository)
+        public AttendanceService(IRepository<Attendance> attendanceRepository, IEmployeeRepository employeeRepository, IRecognitionService recognitionService)
         {
             _attendanceRepository = attendanceRepository;
             _employeeRepository = employeeRepository;
+            _recognitionService = recognitionService;
         }
 
         public async Task<List<Attendance>> GetAllAttendancesAsync()
@@ -49,8 +50,17 @@ namespace Intelliface.BLL.Services
                 await _attendanceRepository.SaveAsync();
             }
         }
-        public async Task<AttendanceResultDto> CheckInAsync(int employeeId, double latitude, double longitude)
+        public async Task<AttendanceResultDto> CheckInAsync(int employeeId, double latitude, double longitude, byte[] Image)
         {
+            if (await _recognitionService.RecognizeAsync(employeeId, Image) == false)
+            {
+                return new AttendanceResultDto
+                {
+                    Success = false,
+                    Message = "Face Not recognized"
+                };
+            }
+
             TimeSpan checkInStart = new TimeSpan(8, 0, 0);  
             TimeSpan checkInEnd = new TimeSpan(24, 0, 0);   
 
@@ -124,8 +134,17 @@ namespace Intelliface.BLL.Services
         }
 
 
-        public async Task<AttendanceResultDto> CheckOutAsync(int employeeId, double latitude, double longitude)
+        public async Task<AttendanceResultDto> CheckOutAsync(int employeeId, double latitude, double longitude, byte[] Image)
         {
+            if (await _recognitionService.RecognizeAsync(employeeId, Image) == false)
+            {
+                return new AttendanceResultDto
+                {
+                    Success = false,
+                    Message = "Face Not recognized"
+                };
+            }
+
             TimeSpan checkInStart = new TimeSpan(8, 0, 0);
             TimeSpan checkInEnd = new TimeSpan(24, 0, 0);
 

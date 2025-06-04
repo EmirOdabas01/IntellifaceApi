@@ -19,7 +19,7 @@ namespace Intelliface.Entities.Models
         public Department Department { get; set; } = null!;
 
         public bool IsAdmin { get; set; }
-
+        public byte[]? FaceRecognitionModel { get; set; }
         public ICollection<Attendance> Attendances { get; set; } = new List<Attendance>();
         public ICollection<EmployeeTrainImage> TrainingImages { get; set; } = new List<EmployeeTrainImage>();
 
