@@ -73,5 +73,9 @@ namespace Intelliface.DAL.Repositories
                           .Where(a => a.EmployeeId == employeeId)
                           .ToListAsync();
         }
+        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _dbSet.Where(predicate).ToListAsync();
+        }
     }
 }

@@ -21,5 +21,7 @@ namespace Intelliface.Entities.Models
         public bool IsAdmin { get; set; }
 
         public ICollection<Attendance> Attendances { get; set; } = new List<Attendance>();
+        public ICollection<EmployeeTrainImage> TrainingImages { get; set; } = new List<EmployeeTrainImage>();
+
     }
 }

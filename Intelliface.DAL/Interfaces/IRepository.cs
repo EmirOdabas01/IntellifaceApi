@@ -22,5 +22,6 @@ namespace Intelliface.DAL.Interfaces
         Task<T?> GetAsync(Expression<Func<T, bool>> filter);
 
         Task<List<Attendance>> GetAttendancesByEmployeeIdAsync(int employeeId);
+        Task<List<T>> GetAllAsync(Expression<Func<T, bool>> predicate);
     }
 }
