@@ -16,5 +16,6 @@ namespace Intelliface.BLL.Interfaces
         Task UpdateEmployeeAsync(Employee employee);
         Task DeleteEmployeeAsync(int id);
         Task<bool> AdminAuthentication(LoginDto admin);
+        Task<bool> EmployeeAuthentication(LoginDto loginDto);
     }
 }

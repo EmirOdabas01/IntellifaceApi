@@ -77,5 +77,16 @@ namespace Intelliface.BLL.Services
 
             return true;
         }
+
+        public async Task<bool> EmployeeAuthentication(LoginDto loginDto)
+        {
+            var employee = await _employeeRepository.GetAsync(emp =>
+                emp.Email == loginDto.EMail &&
+                emp.Password == loginDto.Password);
+
+            if (employee == null) return false;
+
+            return true;
+        }
     }
 }

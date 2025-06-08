@@ -62,7 +62,7 @@ public class EmployeeController : ControllerBase
         {
             return BadRequest(new { message = ex.Message });
         }
-      
+
     }
 
     [HttpPut("{id}")]
@@ -84,7 +84,7 @@ public class EmployeeController : ControllerBase
             return BadRequest(new { message = ex.Message });
         }
 
-       
+
     }
 
     [HttpDelete("{id}")]
@@ -108,5 +108,16 @@ public class EmployeeController : ControllerBase
 
         return Ok("It's an admin");
     }
+    [HttpPost]
+    public async Task<IActionResult> Login([FromBody] LoginDto login)
+    {
+        if (login == null)
+            return BadRequest();
 
+        var isEmp = await _employeeService.EmployeeAuthentication(login);
+
+        if(isEmp == false) return NotFound("Employee not found");
+
+        return Ok("It is an employee");
+    }
 }
